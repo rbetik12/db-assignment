@@ -16,7 +16,7 @@ class Action(Enum):
 
 
 class Deal:
-    deal_id = 0
+    deal_id = int(time.time())
 
     def __init__(self, price, action, timestamp, amount):
         self.deal_id = Deal.deal_id
@@ -53,7 +53,7 @@ def fn(x: float) -> float:
     return math.sin(x) + float(random.randint(-10, 10))
 
 
-logging.basicConfig(filename='../logs/redis.log', level=logging.INFO, format='%(asctime)s %(levelname)s:%(message)s')
+logging.basicConfig(filename='logs/redis.log', level=logging.INFO, format='%(asctime)s %(levelname)s:%(message)s')
 r = redis.Redis(host='localhost', port=6379, db=0)
 
 print("Started gathering trading data...")

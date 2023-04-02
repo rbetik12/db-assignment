@@ -19,7 +19,7 @@ def get_random_share():
         "Visa Inc.", "Procter & Gamble Co", "Mastercard Incorporated", "Berkshire Hathaway Inc.",
         "The Home Depot, Inc.", "UnitedHealth Group Inc.", "Walmart Inc.", "The Coca-Cola Company",
         "Verizon Communications Inc.", "AT&T Inc.", "Pfizer Inc.", "ExxonMobil Corporation",
-        "Cisco Systems, Inc.", "Intel Corporation", "Walt Disney Co", "McDonald's Corporation",
+        "Cisco Systems, Inc.", "Intel Corporation", "Walt Disney Co", "McDonalds Corporation",
         "NVIDIA Corporation", "Merck & Co., Inc.", "Boeing Co", "3M Company", "The Goldman Sachs Group, Inc.",
         "The Boeing Company", "The Walt Disney Company", "Chevron Corporation", "Caterpillar Inc."
     ]

@@ -26,7 +26,7 @@ class Comment:
             'author': self.author
         }
 
-logging.basicConfig(filename='../logs/mongo.log', level=logging.INFO, format='%(asctime)s %(levelname)s:%(message)s')
+logging.basicConfig(filename='logs/mongo.log', level=logging.INFO, format='%(asctime)s %(levelname)s:%(message)s')
 client = MongoClient('localhost', 27017)
 db = client['db']
 collection = db['comments']
