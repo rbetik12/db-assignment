@@ -19,5 +19,15 @@ services:
       - "5432:5432"
     volumes:
       - postgres-data:/var/lib/postgresql
+  clickhouse:
+    image: yandex/clickhouse-server
+    ports:
+      - "8123:8123"
+      - "9000:9000"
+    volumes:
+      - clickhouse_data:/var/lib/clickhouse
+    environment:
+      - "CLICKHOUSE_DATABASE=db"
 volumes:
   postgres-data:
+  clickhouse_data:

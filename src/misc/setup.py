@@ -21,7 +21,7 @@ for i in range(5):
             time.sleep(3)
 
 create_trading_data_table_query = '''
-    CREATE TABLE deals (
+    CREATE TABLE if not exists deals (
         id int primary key,
         share varchar(255),
         price float,
@@ -33,7 +33,7 @@ create_trading_data_table_query = '''
 '''
 
 create_comments_table_query = '''
-    CREATE TABLE comments (
+    CREATE TABLE if not exists comments (
         id serial primary key,
         text text,
         timestamp date,
@@ -52,3 +52,45 @@ except Exception as e:
     logging.error(f"{e}")
 cur.close()
 conn.close()
+
+from clickhouse_driver import Client
+
+ch_host = 'localhost'
+ch_port = 9000
+ch_user = 'default'
+ch_password = ''
+
+# Connect to ClickHouse
+ch_conn = Client(host=ch_host, port=ch_port, user=ch_user, password=ch_password)
+
+ch_create_trading_data_table_query = '''
+    CREATE TABLE IF NOT EXISTS deals (
+        id int,
+        share varchar(255),
+        price float,
+        action int,
+        person varchar(255),
+        timestamp date,
+        amount int,
+        primary key(id)
+    ) ENGINE = MergeTree();
+'''
+
+ch_create_comments_table_query = '''
+    CREATE TABLE IF NOT EXISTS comments (
+        id Int32,
+        text text,
+        timestamp date,
+        author varchar(255),
+        primary key(id)
+    ) ENGINE = MergeTree();
+'''
+
+# Create database
+ch_conn.execute('CREATE DATABASE IF NOT EXISTS db')
+ch_conn.execute('use db')
+ch_conn.execute(ch_create_trading_data_table_query)
+ch_conn.execute(ch_create_comments_table_query)
+
+# Close connection
+ch_conn.disconnect()

@@ -7,8 +7,11 @@ import logging
 import datetime
 
 
-def convert_timestamp_ms_to_postgres(timestamp_ms):
-    timestamp_dt = datetime.datetime.fromtimestamp(timestamp_ms / 1000)
+def convert_timestamp_ms_to_postgres(timestamp_ms, is_correct=False):
+    if is_correct:
+        timestamp_dt = datetime.datetime.fromtimestamp(timestamp_ms / 1000)
+    else:
+        timestamp_dt = datetime.datetime.fromtimestamp(timestamp_ms / 1000)
     timestamp_str = timestamp_dt.strftime('%Y-%m-%d %H:%M:%S')
     # timestamp_postgres = f"to_timestamp('{timestamp_str}', 'YYYY-MM-DD HH:MI:SS')"
     # return timestamp_postgres
@@ -56,7 +59,7 @@ for comment in mongo_values:
 for value in redis_values:
     try:
         cur = conn.cursor()
-        insert_deal_query = f'insert into deals (id, share, price, action, person, timestamp, amount) values ({value["deal_id"]}, \'{value["share"]}\', {value["price"]}, {0 if value["action"] == "Sell" else 1}, \'{value["person"]}\', \'{convert_timestamp_ms_to_postgres(int(value["timestamp"]) * 10**3)}\', {value["amount"]})'
+        insert_deal_query = f'insert into deals (id, share, price, action, person, timestamp, amount) values ({value["deal_id"]}, \'{value["share"]}\', {value["price"]}, {0 if value["action"] == "Sell" else 1}, \'{value["person"]}\', \'{convert_timestamp_ms_to_postgres(int(value["timestamp"]), True)}\', {value["amount"]})'
         cur.execute(insert_deal_query)
         conn.commit()
     except Exception as e:
