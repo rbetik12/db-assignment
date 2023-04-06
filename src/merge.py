@@ -46,7 +46,7 @@ mongo_values = [obj for obj in mongo_it]
 for comment in mongo_values:
     try:
         cur = conn.cursor()
-        insert_comment_query = f'insert into comments (text, timestamp, author) values (\'{comment["text"]}\', \'{convert_timestamp_ms_to_postgres(int(comment["timestamp"]))}\', \'{comment["author"]}\')'
+        insert_comment_query = f'insert into comments (text, timestamp, author) values (\'{comment["text"]}\', \'{convert_timestamp_ms_to_postgres(int(comment["timestamp"]) / 10**6)}\', \'{comment["author"]}\')'
         cur.execute(insert_comment_query)
         conn.commit()
     except Exception as e:
@@ -56,7 +56,7 @@ for comment in mongo_values:
 for value in redis_values:
     try:
         cur = conn.cursor()
-        insert_deal_query = f'insert into deals (id, share, price, action, person, timestamp, amount) values ({value["deal_id"]}, \'{value["share"]}\', {value["price"]}, {0 if value["action"] == "Sell" else 1}, \'{value["person"]}\', \'{convert_timestamp_ms_to_postgres(int(value["timestamp"]))}\', {value["amount"]})'
+        insert_deal_query = f'insert into deals (id, share, price, action, person, timestamp, amount) values ({value["deal_id"]}, \'{value["share"]}\', {value["price"]}, {0 if value["action"] == "Sell" else 1}, \'{value["person"]}\', \'{convert_timestamp_ms_to_postgres(int(value["timestamp"]) * 10**3)}\', {value["amount"]})'
         cur.execute(insert_deal_query)
         conn.commit()
     except Exception as e:

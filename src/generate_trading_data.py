@@ -6,6 +6,7 @@ import logging
 import json
 from enum import Enum
 from misc import utils
+import datetime
 
 SAMPLES_PER_SECOND_AMOUNT = 1000
 
@@ -43,7 +44,7 @@ class Deal:
 def create_random_deal():
     price = math.fabs(fn(round(random.uniform(1.0, 100.0), 2)))
     action = random.choice(list(Action))
-    timestamp = int(time.time())
+    timestamp = int(time.time() * 1000)
     amount = random.randint(10, 4096)
     deal = Deal(price, action, timestamp, amount)
     return deal

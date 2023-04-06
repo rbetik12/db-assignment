@@ -14,7 +14,7 @@ class Comment:
     @classmethod
     def create_random_comment(cls):
         text = ''.join(random.choice('abcdefghijklmnopqrstuvwxyz0123456789') for _ in range(10))
-        timestamp = int(time.time())
+        timestamp = int(time.time_ns())
         comment = cls(text, timestamp)
 
         return comment
