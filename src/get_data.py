@@ -57,3 +57,32 @@ plt.xticks(rotation=90)
 plt.bar(persons, amounts)
 plt.title('Top-10 shares by revenue')
 plt.savefig("../logs/shares.png")
+plt.close()
+
+#How much each user spent on Apple INC shares and which comments he wrote
+query = 'select distinct author, text from comments c join deals d on author = d.person where d.share = \'Alphabet Inc.\''
+comments_res = conn.execute(query)
+
+table = PrettyTable()
+table.field_names = ["Author", "Text"]
+table.add_rows(comments_res)
+print("Comments during Alphabet Inc shares purchasing")
+print(table)
+
+query_deals = 'select person, price, amount from deals where share = \'Alphabet Inc.\''
+deals_res = conn.execute(query_deals)
+
+amount_by_person = {}
+for (person, price, amount) in deals_res:
+    if person in amount_by_person:
+        amount_by_person[person] += price * amount
+    else:
+        amount_by_person[person] = price * amount
+amount_by_person = {k: v for k, v in sorted(amount_by_person.items(), key=lambda item: item[1], reverse=False)}
+amounts = amount_by_person.values()
+persons = amount_by_person.keys()
+plt.xticks(rotation=90)
+plt.bar(persons, amounts)
+plt.title('User spendings on Alphabet Inc.')
+plt.savefig("../logs/spendings-alphabet.png")
+plt.close()
